@@ -1,4 +1,4 @@
-package com.backoffice.BackofficeInternetBanking.dto;
+package com.authentication.authenticationapp.dto;
 
 
 import lombok.Data;

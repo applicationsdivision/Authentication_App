@@ -38,10 +38,7 @@ public class UserService {
         }catch (HttpClientErrorException e){
             throw new BadCredentialsException("invalid credentials");
         }
-
     }
-
-
     public String generateOtp() {
 
         String otp = String.format("%06d", new Random().nextInt(999999));
