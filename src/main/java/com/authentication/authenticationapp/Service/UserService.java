@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Random;
+
 
 @Service
 public class UserService {
@@ -37,6 +39,14 @@ public class UserService {
             throw new BadCredentialsException("invalid credentials");
         }
 
+    }
+
+
+    public String generateOtp() {
+
+        String otp = String.format("%06d", new Random().nextInt(999999));
+        System.out.println(otp);
+        return otp;
     }
 
 
