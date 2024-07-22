@@ -3,6 +3,7 @@ package com.authentication.authenticationapp.Controller;
 
 import com.authentication.authenticationapp.Service.EmailService;
 import com.authentication.authenticationapp.Service.UserService;
+import com.authentication.authenticationapp.dto.EmailDto;
 import com.authentication.authenticationapp.dto.OtpValidationDto;
 import com.authentication.authenticationapp.dto.loginDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,8 +18,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -70,6 +69,19 @@ public class UserController {
         catch (BadCredentialsException | JsonProcessingException e) {
            return new ResponseEntity<String>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @PostMapping("/attach_email")
+    public ResponseEntity<String> attachEmail(@RequestBody EmailDto emaildto) {
+        // Generate OTP
+        String otp = userService.generateOtp();
+        // Send OTP email
+        emailService.sendOtpEmail(emaildto.getEmail(), otp);
+
+        cacheOtp(emaildto.getEmail(), otp);
+
+        return new ResponseEntity<>("Otp is sent to the email. It will expire in 5 minutes.",HttpStatus.OK);
+
     }
 
     @PostMapping("/validate-otp")
