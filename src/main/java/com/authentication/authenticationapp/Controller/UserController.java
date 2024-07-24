@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
+import com.authentication.authenticationapp.Service.AppLogger;
 
 
 import java.util.concurrent.TimeUnit;
@@ -43,7 +44,7 @@ public class UserController {
     public  ResponseEntity<String> login(@RequestBody loginDto loginDto){
         try {
 
-
+            AppLogger.LOGGER.info("User " + loginDto.getUsername() +" login attempt");
             String username = "bnr\\\\" + loginDto.getUsername();
             System.out.println(username);
             ResponseEntity<String> response = userService.authenticateUser(loginDto.getUsername(), loginDto.getPassword());
@@ -51,9 +52,10 @@ public class UserController {
 
 
             if(response.getStatusCode()== HttpStatus.UNAUTHORIZED){
-
+                AppLogger.LOGGER.info("User " + loginDto.getUsername() +" login failed");
                 return new ResponseEntity<String>("Invalid credentils",HttpStatus.UNAUTHORIZED );
             }
+            AppLogger.LOGGER.info("User " + loginDto.getUsername() +" login successful");
             System.out.println("authenticate");
             // Generate OTP
             String otp = userService.generateOtp();
@@ -61,6 +63,7 @@ public class UserController {
 
             // Send OTP email
             emailService.sendOtpEmail(email, otp);
+            AppLogger.LOGGER.info("OTP sent");
 
             // Cache username and OTP
             cacheOtp(loginDto.getUsername(), otp);
@@ -88,8 +91,10 @@ public class UserController {
     public ResponseEntity<String> validateOtp(@RequestBody OtpValidationDto otpValidationDto) {
         String cachedOtp = getCachedOtp(otpValidationDto.getUsername());
         if (cachedOtp != null && cachedOtp.equals(otpValidationDto.getOtp())) {
+            AppLogger.LOGGER.info("OTP validated successfully");
             return new ResponseEntity<>(new String("OTP validated successfully"), HttpStatus.OK);
         } else {
+            AppLogger.LOGGER.info("Invalid OTP");
             return new ResponseEntity<>(new String("Invalid OTP"), HttpStatus.UNAUTHORIZED);
         }
     }
