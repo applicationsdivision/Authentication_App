@@ -67,7 +67,7 @@ public class UserController {
             return response;
         }
         catch (BadCredentialsException | JsonProcessingException e) {
-           return new ResponseEntity<String>("Invalid credentials", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("Invalid credentials", HttpStatus.UNAUTHORIZED);
         }
     }
 
