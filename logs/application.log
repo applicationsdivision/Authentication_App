@@ -65,3 +65,4 @@
 2024-07-24 10:54:00 [http-nio-8060-exec-4] INFO  c.a.a.Service.AppLogger - OTP sent
 2024-07-24 10:54:21 [http-nio-8060-exec-3] INFO  c.a.a.Service.AppLogger - Invalid OTP
 2024-07-24 10:54:26 [http-nio-8060-exec-5] INFO  c.a.a.Service.AppLogger - OTP validated successfully
+2024-07-24 11:09:34 [http-nio-809] bla bla bla just testing
